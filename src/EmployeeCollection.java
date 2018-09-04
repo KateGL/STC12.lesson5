@@ -2,6 +2,14 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/***
+ * Класс для работы с коллекцией Employee
+ * запись в файл Serializable
+ *
+ * на самом деле мне тут не очень нравится дизайн записи в файл
+ * с таки вот наследованием. Можно ли тут применить композицию вместо наследования???
+ */
+
 public class EmployeeCollection  implements Serializable {
     ArrayList<Employee> list = new ArrayList<Employee>();
 
@@ -15,10 +23,6 @@ public class EmployeeCollection  implements Serializable {
 
     String fileName = "employee.txt";
 
-    /***
-     Считаем что у нас name+age уникальные ключ
-     *
-     */
 
     boolean save(Employee empl){
         if(this.list.add(empl)){
@@ -115,6 +119,7 @@ public class EmployeeCollection  implements Serializable {
         try {
             FileInputStream inpStream = new FileInputStream(this.fileName);
             ObjectInputStream inpStreamObject = new ObjectInputStream(inpStream);
+            // не очень нравится такое чтение в отдельный объект, но мне не хотелось затирать исходный
             EmployeeCollection readedCollection =  (EmployeeCollection)inpStreamObject.readObject();
             inpStreamObject.close();
             return readedCollection;

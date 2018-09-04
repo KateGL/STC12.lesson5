@@ -44,6 +44,8 @@ public class Main {
         System.out.println(emplCollection.toString());
         rColl = emplCollection.readFromFile();
         System.out.println("readed: "+rColl.toString());
+        System.out.println("Get PROGRAMMERs: "+emplCollection.getByJob(Job.PROGRAMMER));
+        System.out.println("Get TEACHERs: "+emplCollection.getByJob(Job.TEACHER));
     }
 
 }
