@@ -1,18 +1,19 @@
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EmployeeCollection {
+public class EmployeeCollection  implements Serializable {
     ArrayList<Employee> list = new ArrayList<Employee>();
 
-    public String getFilename() {
-        return filename;
+    public String getFileName() {
+        return fileName;
     }
 
-    public void setFilename(String filename) {
-        this.filename = filename;
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 
-    String filename = "employee.txt";
+    String fileName = "employee.txt";
 
     /***
      Считаем что у нас name+age уникальные ключ
@@ -52,6 +53,7 @@ public class EmployeeCollection {
         }
         return listByJob;
     }
+
 
     boolean saveOrUpdate(Employee empl){
         Employee emplCurrent = getByName(empl.getName());
@@ -95,11 +97,33 @@ public class EmployeeCollection {
                 '}';
     }
 
-    boolean writeToFile(){
+    boolean writeToFile() {
+        try {
+            FileOutputStream outStream = new FileOutputStream(this.fileName);
+            ObjectOutputStream outStreamObject = new ObjectOutputStream(outStream);
+            outStreamObject.writeObject(this);
+            outStreamObject.close();
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         return false;
     }
 
     EmployeeCollection readFromFile(){
+        try {
+            FileInputStream inpStream = new FileInputStream(this.fileName);
+            ObjectInputStream inpStreamObject = new ObjectInputStream(inpStream);
+            EmployeeCollection readedCollection =  (EmployeeCollection)inpStreamObject.readObject();
+            inpStreamObject.close();
+            return readedCollection;
+        } catch(ClassNotFoundException | IOException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 }
+
+
+

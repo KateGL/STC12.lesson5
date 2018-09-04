@@ -1,8 +1,9 @@
+import java.io.*;
 import java.util.Objects;
 
 enum Job {PROGRAMMER, STUDENT, TEACHER, BABYSITTER, CLEANER, HR, DIRECTOR}
 
-public class Employee{
+public class Employee implements Serializable, Externalizable {
     private String name;
     private Integer age;
     private Job job;
@@ -74,5 +75,27 @@ public class Employee{
                 ", job=" + job +
                 ", salary=" + salary +
                 '}';
+    }
+
+    public void writeExternal(ObjectOutput out) throws IOException{
+        try {
+            out.writeObject(this.name);
+            out.writeObject(this.age);
+            out.writeObject(this.job);
+            out.writeObject(this.salary);
+        }catch (IOException e){
+            throw e;
+        }
+    }
+
+    public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException{
+        try {
+            this.name = (String) in.readObject();
+            this.age = (Integer) in.readObject();
+            this.job = (Job) in.readObject();
+            this.salary = (Integer) in.readObject();
+        }catch (IOException | ClassNotFoundException e){
+            throw e;
+        }
     }
 }
